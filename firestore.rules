@@ -1,0 +1,13 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /graves/{docId} {
+      // Svi mogu čitati
+      allow read: if true;
+
+      // Samo admin (preko emaila) smije pisati/brisati
+      allow create, update, delete: if request.auth != null
+        && request.auth.token.email == "admin@example.com";
+    }
+  }
+}
